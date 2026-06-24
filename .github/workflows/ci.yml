@@ -1,0 +1,45 @@
+name: Build and Test Model API
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository code
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build -t weekly-model-api .
+
+      - name: Run the container in the background
+        run: docker run -d -p 8000:8000 --name test-container weekly-model-api
+
+      - name: Wait for the API to start
+        run: sleep 5
+
+      - name: Test the root endpoint
+        run: curl --fail http://127.0.0.1:8000/
+
+      - name: Test the prediction endpoint
+        run: |
+          curl --fail -X POST http://127.0.0.1:8000/predict \
+            -H "Content-Type: application/json" \
+            -d '{
+              "mean_radius": 17.99, "mean_texture": 10.38, "mean_perimeter": 122.8,
+              "mean_area": 1001.0, "mean_smoothness": 0.1184, "mean_compactness": 0.2776,
+              "mean_concavity": 0.3001, "mean_concave_points": 0.1471, "mean_symmetry": 0.2419,
+              "mean_fractal_dimension": 0.07871, "radius_error": 1.095, "texture_error": 0.9053,
+              "perimeter_error": 8.589, "area_error": 153.4, "smoothness_error": 0.006399,
+              "compactness_error": 0.04904, "concavity_error": 0.05373, "concave_points_error": 0.01587,
+              "symmetry_error": 0.03003, "fractal_dimension_error": 0.006193, "worst_radius": 25.38,
+              "worst_texture": 17.33, "worst_perimeter": 184.6, "worst_area": 2019.0,
+              "worst_smoothness": 0.1622, "worst_compactness": 0.6656, "worst_concavity": 0.7119,
+              "worst_concave_points": 0.2654, "worst_symmetry": 0.4601, "worst_fractal_dimension": 0.1189
+            }'
+
+      - name: Clean up the container
+        if: always()
+        run: docker stop test-container
