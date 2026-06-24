@@ -1,0 +1,10 @@
+# MLflow local tracking artifacts (not meant for Git)
+mlflow.db
+mlruns/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# The actual dataset content (DVC tracks this, not Git)
+patient_data.csv
