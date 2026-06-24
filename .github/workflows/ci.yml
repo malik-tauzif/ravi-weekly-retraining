@@ -28,7 +28,7 @@ jobs:
           curl --fail -X POST http://127.0.0.1:8000/predict \
             -H "Content-Type: application/json" \
             -d '{
-              "mean_radius": 17.99, "mean_texture": 10.38, "mean_perimeter": 122.8,
+              "mean_radius_TYPO": 17.99, "mean_texture": 10.38, "mean_perimeter": 122.8,
               "mean_area": 1001.0, "mean_smoothness": 0.1184, "mean_compactness": 0.2776,
               "mean_concavity": 0.3001, "mean_concave_points": 0.1471, "mean_symmetry": 0.2419,
               "mean_fractal_dimension": 0.07871, "radius_error": 1.095, "texture_error": 0.9053,
