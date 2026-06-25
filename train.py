@@ -16,8 +16,8 @@ y = df["target"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 with mlflow.start_run(run_name="weekly_retrain"):
-    mlflow.log_param("n_estimators", 100)
-    mlflow.log_param("max_depth", 5)
+    mlflow.log_param("n_estimators", 200)
+    mlflow.log_param("max_depth", 10)
 
     # Link this run to the EXACT data version it used — closing the loop from Chapter 2
     with open("patient_data.csv.dvc") as f:
